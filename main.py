@@ -48,7 +48,7 @@ intent_true_labels = []
 
 @bot.message_handler(commands=['start'])
 def start_message(message):
-    bot.send_message(message.chat.id, 'Привет, я бот книжного магазина Буклет! Пишите свои вопросы', reply_markup=keyboard1)
+    bot.send_message(message.chat.id, 'Привет это FAQ-бот одного из лучших институтов УрФУ! Постараюсь ответить на твой вопрос.', reply_markup=keyboard1)
 
 
 @bot.message_handler(commands=['metrics'])
@@ -77,41 +77,19 @@ def send_text(message):
 
     total_requests += 1
 
-    if prob.item() > 0.75:
+    if prob.item() > 0.8:
         intent_predictions.append(tag)
         for intent in intents['intents']:
             if tag == intent["tag"]:
-                if tag == "адрес":
-                    bot.send_message(message.chat.id, f"{random.choice(intent['responses'])}")
-                    bot.register_next_step_handler(message, address)
-                elif tag == "выбор книги":
-                    bot.send_message(message.chat.id, f"{random.choice(intent['responses'])}")
-                    bot.register_next_step_handler(message)
-                else:
-                    bot.send_message(message.chat.id, f"{random.choice(intent['responses'])}")
+                bot.send_message(message.chat.id, f"{random.choice(intent['responses'])}")
         correct_predictions += 1
         intent_true_labels.append(tag)
     else:
-        bot.send_message(message.chat.id, f"Bot: I do not understand..." + "\n")
+        bot.send_message(message.chat.id, f"Простите, такого я ещё не знаю." + "\n")
         logging.info(f"{bot_name}: I do not understand...")
 
     response_time = time.time() - start_time
     response_times.append(response_time)
-
-
-def address(message):
-    global city
-    city = message.text.lower()
-    if city == 'екатеринбург':
-        bot.send_message(message.chat.id,
-                         "В Екатеринбурге есть два наших магазина!\n1) На просп. Ленина, 70 \n2) Ул. Малышева, 128")
-    elif city == 'москва':
-        bot.send_message(message.chat.id,
-                         "Мы находимся в Москве на Чистопрудный бул., 23 строение 1")
-    elif city == 'питер':
-        bot.send_message(message.chat.id, "Мы находимся в Питере на набережной реки Фонтанки, 44")
-    bot.register_next_step_handler(message, send_text)
-
 
 def calculate_metrics():
     if not intent_true_labels or not intent_predictions:
