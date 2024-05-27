@@ -1,4 +1,4 @@
-# :books: Book Library
+# :radio: RTF_BOT
 
 ## Установить зависимости
 ```pip install requirements.txt -r```
@@ -8,4 +8,3 @@
 
 
 - Запустить ``main.py``
-
