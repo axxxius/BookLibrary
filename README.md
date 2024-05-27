@@ -3,7 +3,7 @@
 ## Установить зависимости
 ```pip install requirements.txt -r```
 
-## Для запуска :tada:
+## Для запуска
 - Вставить токен ``bot = telebot.TeleBot('Ваш telegram токен')``
 
 
